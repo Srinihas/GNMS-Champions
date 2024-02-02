@@ -6,23 +6,10 @@ var inputPassword;
 var buttonSignIn;
 var buttonUpdate;
 var inputUpdatePlace_grade, inputUpdatePlace_section, inputUpdatePlace_name, inputUpdatePlace_stars;
-var logoimg, infoimg;
-var logo, info;
 var buttonShow;
-
-function preload() {
-  logoimg = loadImage('/logo.png')
-  infoimg = loadImage('/Who-we-are.png')
-}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  
-  logoimg.resize(150, 150);
-  image(logoimg, 0, 0);
-
-  infoimg.resize(400, 250);
-  image(infoimg, windowWidth - 500, windowHeight - 500);
 
   // Initialize Firebase
   var firebaseConfig = {
