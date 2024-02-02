@@ -6,10 +6,23 @@ var inputPassword;
 var buttonSignIn;
 var buttonUpdate;
 var inputUpdatePlace_grade, inputUpdatePlace_section, inputUpdatePlace_name, inputUpdatePlace_stars;
+var logoimg, infoimg;
+var logo, info;
 var buttonShow;
+
+function preload() {
+  logoimg = loadImage('/logo.png')
+  infoimg = loadImage('/Who-we-are.png')
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  
+  logoimg.resize(150, 150);
+  image(logoimg, 0, 0);
+
+  infoimg.resize(400, 250);
+  image(infoimg, windowWidth - 500, windowHeight - 500);
 
   // Initialize Firebase
   var firebaseConfig = {
@@ -51,16 +64,6 @@ async function signIn() {
         inputPassword.position(-100, -100);
         inputEmail.position(-100, -100);
         buttonSignIn.position(-100, -100);
-        let students_array = await database.ref("/Grade-"+inputUpdatePlace_grade.value()+"/"+inputUpdatePlace_section.value()+"/Students").get();
-        students_array = students_array.val();
-        if (students_array) {
-          for (let index = 0; index < students_array.length; index++) {
-            text(students_array[index], logoimg.x+200, 20+(index*10))
-            print("IT WORKS")
-          }
-        } else {
-          text("Server is currently offline", buttonShow.x, buttonShow.y + 20)
-        }        
         
       } else {
         auth.signInWithEmailAndPassword(email, password)
@@ -81,6 +84,7 @@ async function signIn() {
             inputPassword.position(-100, -100);
             inputEmail.position(-100, -100);
             buttonSignIn.position(-100, -100);
+            buttonShow.mousePressed(showList());
          })
          .catch((error) => {
            console.log(error);
@@ -96,4 +100,17 @@ function updateDatabase() {
     .then(() => {
       console.log('Database updated');
     });
+}
+
+async function showList(){
+  let students_array = await database.ref("/Grade-"+inputUpdatePlace_grade.value()+"/"+inputUpdatePlace_section.value()+"/Students").get();
+        students_array = students_array.val();
+        if (students_array) {
+          for (let index = 0; index < students_array.length; index++) {
+            text(students_array[index], logoimg.x+200, 20+(index*10))
+            print("IT WORKS")
+          }
+        } else {
+          text("Server is currently offline", buttonShow.x, buttonShow.y + 40)
+        }
 }
